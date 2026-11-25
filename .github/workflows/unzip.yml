@@ -1,0 +1,25 @@
+name: Unzip Plugin Archive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract zip to repo root
+        run: |
+          unzip -o revenge-bd-vencord-themes-plugin.zip
+          rm -rf revenge-bd-vencord-themes/.github
+          cp -r revenge-bd-vencord-themes/. .
+          rm -rf revenge-bd-vencord-themes revenge-bd-vencord-themes-plugin.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Extract Revenge plugin files"
+          git push
+          
